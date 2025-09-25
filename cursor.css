@@ -1,0 +1,282 @@
+body {
+    cursor: url("/cursor/cursor.png"), auto;
+}
+
+.btn {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+.btn-google {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+#forgotPasswordLink {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+.marquee {
+    cursor: url("/cursor/cursor.png"), auto;
+}
+
+.eye open-eye {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+.svg-toggle-password {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+.inputBox input {
+    cursor: url("/cursor/text.png"), auto;
+}
+
+#searchBar {
+    cursor: url("/cursor/text.png"), auto;
+}
+
+#logoutBtn {
+    cursor: url("/cursor/tap.png"), auto;
+    user-select: none;
+}
+
+.copy-btn {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+.drop-section {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+button {
+    cursor: url("/cursor/tap.png"), auto;
+    user-select: none;
+}
+
+footer {
+    user-select: none;
+}
+
+.logoYtb {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+.video-player iframe {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+#videoPlayer {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+.result-item {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+.search-section input {
+    cursor: url("/cursor/text.png"), auto;
+}
+
+.search-section button {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+
+.toggle-left-panel {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+.sort-section label,
+.filter-section label {
+    cursor: url("/cursor/cursor.png"), auto;
+}
+
+#sortSelect,
+#filterSelect {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+#sortSelect:focus,
+#filterSelect:focus {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+.sort-filter-container {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+.close-btn {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+#submitSecurityAnswer {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+#securityAnswer {
+    cursor: url("/cursor/text.png"), auto;
+}
+
+.close-button {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+#backToLogin {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+.format-gambar {
+    cursor: url("/cursor/cursor.png"), auto;
+}
+
+.format-gambar h3 {
+    cursor: url("/cursor/cursor.png"), auto;
+}
+
+.quality-section label {
+    cursor: url("/cursor/cursor.png"), auto;
+}
+
+.size-section label {
+    cursor: url("/cursor/cursor.png"), auto;
+}
+
+.quality-section input {
+    cursor: url("/cursor/text.png"), auto;
+}
+
+.size-section input {
+    cursor: url("/cursor/text.png"), auto;
+}
+
+.format-gambar .format-section button {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+.tab-section p {
+    cursor: url("/cursor/cursor.png"), auto;
+}
+
+.tab-section h6 {
+    cursor: url("/cursor/cursor.png"), auto;
+}
+
+.tab-section #percentage-slider{
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+.tab-section input{
+    cursor: url("/cursor/text.png"), auto;
+}
+
+.name-item {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+.logo-section label {
+    cursor: url("/cursor/cursor.png"), auto;
+}
+
+.logo-section input {
+    cursor: url("/cursor/text.png"), auto;
+}
+
+.complexity-section input {
+    cursor: url("/cursor/text.png"), auto;
+}
+
+.complexity-section label {
+    cursor: url("/cursor/cursor.png"), auto;
+}
+
+.input-section label {
+    cursor: url("/cursor/cursor.png"), auto;
+}
+
+.input-section input {
+    cursor: url("/cursor/text.png"), auto;
+}
+
+.tab-item {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+.tab-item.active {
+    cursor: url("/cursor/cursor.png"), auto;
+}
+
+.tab-content.active label {
+    cursor: url("/cursor/cursor.png"), auto;
+}
+
+.sub-tab-item {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+.sub-tab-item.active {
+    cursor: url("/cursor/cursor.png"), auto;
+}
+
+.clear-btn {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+.button-section button {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+.searchbar-section input {
+    cursor: url("/cursor/text.png"), auto;
+    
+}
+
+.date-filter-section input[type="date"] {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+.date-filter-section label {
+    cursor: url("/cursor/cursor.png"), auto;
+}
+
+#filterBtn {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+#resetFilterBtn {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+.export-btn {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+.pagination button {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+.dropdown label {
+    cursor: url("/cursor/cursor.png"), auto;
+}
+
+.dropdown select {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+.info-count {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+#visitorTable tr:nth-child(odd) {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+#visitorTable tr:nth-child(even) {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+#closePopup {
+    cursor: url("/cursor/tap.png"), auto;
+}
+
+#visitorTable th {
+    cursor: url("/cursor/cursor.png"), auto;
+}

@@ -1,0 +1,987 @@
+body {
+    background-color: rgb(10, 66, 101);
+    background-image: url("texture.png");
+    color: #e0e0e0;
+    font-family: Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+.container {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2px;
+    background: url('backgroundlogin.jpg') no-repeat center center/cover;
+    transition: transform 0.3s ease;
+}
+
+
+.main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+    gap: 20px;
+    width: 100%;
+    max-width: 1290px;
+    box-sizing: border-box;
+    z-index: 501;
+}
+
+.left-panel, .right-panel {
+    background: rgba(255, 255, 255, 0.2); /* Efek transparan */
+    backdrop-filter: blur(5px);
+    padding-block: 20px;
+    border-radius: 10px;
+    flex: 1;
+    min-width: 300px;
+    box-sizing: border-box;
+    min-height: 600px;
+    max-height: 1900px;
+    margin-bottom: 10px;
+    padding-inline: 25px;
+    z-index: 501;
+}
+
+.left-panel {
+    min-height: 90px;
+}
+
+.left-panel:hover, .right-panel:hover {
+    background: rgba(255, 255, 255, 0.2); /* Efek transparan */
+    backdrop-filter: blur(6px);
+}
+
+.left-panel h2, .right-panel h2 {
+    margin-top: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #050505;
+    background: rgba(255, 204, 0, 0.72); /* Efek transparan */
+    backdrop-filter: blur(15px);
+    padding-block: 10px;
+    border-radius: 30px;
+    user-select: none;
+}
+
+.right-panel p{
+    color: #000000;
+    text-align: center;
+    background: rgba(255, 204, 0, 0.72); /* Efek transparan */
+    backdrop-filter: blur(15px);
+    padding: 10px;
+    border-radius: 10px;
+    user-select: none;
+}
+
+.message {
+    color: #000000;
+    text-align: center;
+    background: rgba(255, 204, 0, 0.72); /* Efek transparan */
+    backdrop-filter: blur(15px);
+    padding-block: 5px;
+    padding-inline: 20px;
+    border-radius: 10px;
+    user-select: none;
+    margin-top: 140px;
+}
+
+
+.input-section, .button-section, .drop-section {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.button-section {
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    margin-top: 0px;
+    background-color: rgb(0, 0, 0);
+    background-image: url("texture.png");
+    color: #e0e0e0;
+    border: none;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-sizing: border-box;
+    font-size: 15px;
+    display: block;
+}
+
+button:hover {
+    background-color: rgb(255, 230, 0);
+    color: #000000;
+}
+
+.qr-display {
+    background: rgba(94, 94, 94, 0.92); /* Efek transparan */
+    backdrop-filter: blur(15px);
+    background-image: url("texture.png");
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+    box-sizing: border-box;
+    min-height: 50px;
+    max-height: 642px;
+    margin-bottom: 15px;
+    overflow-y: auto;    /* tambahkan ini */
+}
+
+.qr-display p {
+    margin: 0;
+    user-select: none;
+}
+
+.drop-section {
+    width: 100%;
+    min-height: 150px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 5px solid #8c1818;
+    text-align: center;
+    align-content: center;
+    background: rgba(253, 253, 253, 0.72); /* Efek transparan */
+    backdrop-filter: blur(15px);
+    background-image: url("texture.png");
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    box-sizing: border-box;
+    position: relative; /* Add relative positioning for buttons */
+    max-height: 250px; /* Set maximum height for file list */
+    overflow-y: auto;
+    user-select: none;
+    color: #000000;
+}
+
+.drop-section.dragover {
+    background-color: #fff6e7;
+    border: 5px dashed #444;
+    transform:scale(1.01);
+    color: #fff6e7;
+}
+
+.drop-section:hover {
+    background: rgba(255, 255, 255, 1);
+    border: 3px dashed #444;
+    color: #000000;
+    transform:scale(1.01);
+    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+
+
+
+#file-list {
+    margin-top: 10px;
+    text-align: left;
+}
+
+.file-item {
+    background-color: #444;
+    background-image: url("texture.png");
+    color: #e0e0e0;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    border: 1px solid #555;
+    transition: background-color 0.3s ease;
+}
+
+.file-item:hover {
+    background-color: #555;
+}
+
+.file-item img {
+    width: 32px;
+    height: 32px;
+    margin-right: 10px;
+    pointer-events: none;
+}
+
+.file-item span {
+    display: inline-block;
+    max-width: 500px; /* Adjust this value as needed */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+footer {
+    min-height: 50px;
+    margin-top: 25px;
+    color: #e0e0e0;
+    text-align: center;
+    z-index: 521;
+}
+
+.loading-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    z-index: 1000;
+}
+
+.loading-spinner {
+    border: 16px solid #f3f3f3;
+    border-top: 16px solid #444;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+    .main {
+        flex-direction: column;
+    }
+
+    .left-panel, .right-panel {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .button-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .button-section button {
+        width: 80%;
+        margin: 10px 0;
+    }
+}
+
+@media screen and ((max-width: 1024px) and (orientation: portrait)), (max-width: 768px) {
+    /* sembunyikan GIF loading */
+    #loading-gif {
+    display: none !important;
+    }
+
+    /* ubah main jadi kolom */
+    .main {
+    flex-direction: column;
+    }
+
+    /* default: left-panel di atas right-panel */
+    .left-panel {
+    order: 0;
+    }
+
+    /* jika right-panel sudah diberi class `active`, diprioritaskan di atas */
+    .right-panel.active {
+    order: -1;
+    }
+
+    /* sembunyikan left-panel saat right-panel aktif */
+    .main:has(.right-panel.active) .left-panel {
+    display: none !important;
+    }
+}
+
+
+/* Tambahkan di CSS (print.css) */
+.certificate-section {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.certificate-inputs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+#selectExcel, #selectTemplate, #generateCert {
+    background: #2c3e50;
+    background-image: url("texture.png");
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+#generateCert {
+    grid-column: span 2;
+    background: #27ae60;
+}
+
+/* Tambahan styling untuk Excel preview */
+.excel-preview {
+    background: rgba(18, 18, 18, 0.72);
+    background-image: url("texture.png");
+    backdrop-filter: blur(15px);
+    padding-block: 17px;
+    padding-right: 17px;
+    padding-left: 19px;
+    border-radius: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #000000;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.excel-preview h3 {
+    margin-top: 0;
+    text-align: center;
+    color: #050505;
+    background: rgba(255, 204, 0, 0.72);
+    padding: 8px;
+    border-radius: 20px;
+    margin-bottom: 15px;
+    user-select: none;
+}
+
+/* Bungkus tabel dengan border-radius dan overflow hidden */
+.table-container {
+    max-height: 300px;      
+    overflow-y: auto;
+    position: relative;     
+    border-radius: 8px;      /* sudut membulat */
+    overflow: auto;        /* potong isi yang melampaui radius */
+}
+
+/* Buat border-collapse separate agar radius bekerja */
+.excel-table {
+    width: 100%;
+    border-collapse: separate;  /* ganti dari collapse */
+    border-spacing: 0;          /* hilangkan celah */
+    font-size: 14px;
+}
+
+/* Radius di sudut atas header */
+.excel-table th:first-child {
+    border-top-left-radius: 8px;
+}
+.excel-table th:last-child {
+    border-top-right-radius: 8px;
+}
+
+/* Radius di sudut bawah baris terakhir */
+.excel-table tr:last-child td:first-child {
+    border-bottom-left-radius: 8px;
+}
+.excel-table tr:last-child td:last-child {
+    border-bottom-right-radius: 8px;
+}
+
+/* Border dan padding tetap */
+.excel-table th, 
+.excel-table td {
+    /* border: 1px solid #444; */
+    padding: 8px;
+}
+
+/* Sticky header seperti sebelumnya */
+.excel-table th {
+    background-color: rgb(10, 66, 101);
+    background-image: url("texture.png");
+    color: #ffffff;
+    position: sticky;
+    top: 0;
+    text-align: center;
+    z-index: 10; /* agar tetap di atas baris lain */
+}
+
+/* Sisanya tetap sama */
+.excel-table td {
+    text-align: left;
+}
+
+.excel-table td:first-child {
+    color: #000000;
+}
+
+.excel-table tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.excel-table tr:nth-child(odd) {
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.excel-table tr:hover {
+    background-color: rgb(255, 244, 200);
+    font-weight: bold;
+    transition: background-color 0.03s linear;
+}
+
+/* PDF Preview styling */
+#pdf-preview {
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+}
+
+#pdf-preview canvas {
+    max-width: 100%;
+    margin-bottom: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.pdf-navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.pdf-navigation button {
+    width: auto;
+    padding: 8px 15px;
+    background-color: rgba(255, 208, 0, 0.8);
+    color: #000000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.pdf-navigation span {
+    color: #e0e0e0;
+    font-weight: bold;
+    
+}
+
+.certificate-list {
+    list-style: none;
+    margin: 0;
+    min-height: 50px;
+    max-height: 1847px;
+}
+
+.certificate-item {
+    display: flex;
+    align-items: left;
+    margin-bottom: 10px;
+    background-color: rgb(255, 255, 255);
+    color: #000000;
+    padding-inline: 15px;
+    padding-block: 15px;
+    margin-left: -40px;
+    border-radius: 5px;
+    font-weight: 600;
+}
+
+.certificate-item:hover {
+    background-color: rgb(255, 246, 162);
+    color: #000000;
+    transform: scale(1.01);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+}
+
+.certificate-item a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+}
+
+.certificate-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+}
+
+#download-all{
+    width: 100%;
+    padding: 10px;
+    margin-top: 12px;
+    border: none;
+    border-radius: 6px;
+    background-color: rgb(35, 35, 35);
+    color: #e0e0e0;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#download-all:hover {
+    background-color: rgb(255, 34, 0);
+    color: #ffffff;
+}
+
+.email-config {
+    margin-block: 16px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    color: #000;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: background 0.3s ease;
+}
+
+.email-config:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.email-config summary {
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 8px;
+    user-select: none;
+}
+
+.email-config .email-fields {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transform-origin: top;
+    transition: max-height 0.4s ease-out, opacity 0.2s ease-out;
+}
+
+.email-config[open] .email-fields {
+    max-height: 500px; /* Sesuaikan tinggi maksimal sesuai konten */
+    opacity: 1;
+}
+
+.email-config label {
+    display: block;
+    margin: 25px 5px -10px 4px;
+    padding: 10px 15px;
+    background-color: rgba(255, 208, 0, 0.8);
+    border-radius: 15px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #000;
+}
+
+.email-config input[type="text"],
+.email-config textarea {
+    width: 100%;
+    padding: 8px 10px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.email-config input::placeholder,
+.email-config textarea::placeholder {
+    color: #666;
+    font-style: italic;
+}
+
+#send-all {
+    width: 100%;
+    padding: 10px;
+    margin-top: 12px;
+    border: none;
+    border-radius: 6px;
+    background-color: rgb(35, 35, 35);
+    color: #e0e0e0;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#send-all:hover {
+    background-color: rgb(255, 230, 0);
+    color: #000;
+}
+
+/* utility */
+.hidden { display: none !important; }
+
+/* keyframes bouncing */
+@keyframes bounceIn {
+0%   { transform: scale(0.3); opacity: 0; }
+50%  { transform: scale(1.05); opacity: 1; }
+70%  { transform: scale(0.9); }
+100% { transform: scale(1); }
+}
+@keyframes bounceOut {
+0%   { transform: scale(1); opacity: 1; }
+20%  { transform: scale(0.9); }
+50%  { transform: scale(1.1); }
+100% { transform: scale(0); opacity: 0; }
+}
+
+/* kelas animasi */
+.bounce-in  { animation: bounceIn 0.6s both; }
+.bounce-out { animation: bounceOut 0.6s both; }
+
+/* styling GIF */
+#loading-gif {
+min-width: 550px;
+margin: 0 auto 20px;
+display: block;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#loading-gif {
+    position: absolute;
+    top: 5%;
+    left: 56%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    /* border debugging */
+}
+
+/* canvas hujan full-screen */
+#rain-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 150vw;
+    height: 100vh;
+    pointer-events: none;  /* supaya klik tetap ke bawah */
+    z-index: 500;          /* pastikan di atas background tapi di bawah UI */
+}
+
+/* overlay putih semi-transparan untuk lightning */
+#lightning-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(255,255,255,0.8);
+    pointer-events: none;  /* klik tetap menembus */
+    opacity: 0;
+    z-index: 1000;
+}
+
+/* animasi kilat */
+@keyframes lightning {
+    0%   { opacity: 0; }
+    20%  { opacity: 1; }
+    40%  { opacity: 0.5; }
+    60%  { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+/* class untuk memicu animasi */
+#lightning-overlay.flash {
+    animation: lightning 0.5s ease-out;
+}
+
+/* Modal overlay */
+.audio-modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;            /* Pastikan modal di atas semua UI */
+}
+
+/* Konten modal */
+.modal-content {
+    background: rgb(255, 255, 255, 0.85);
+    backdrop-filter: blur(5px);
+    padding-inline: 30px;
+    padding-bottom: 20px;
+    padding-top: 15px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 54px 52px rgba(0,0,0,0.3);
+}
+
+.modal-content p {
+    margin-bottom: 16px;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+#audio-confirm-btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    background-color: #ffd712;
+    background-image: url("texture.png");
+    color: #000000;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+#audio-confirm-btn:hover {
+    transform: scale(1.05);
+    background-color: #333;
+    color: beige;
+    background-image: url("texture.png");
+}
+
+/* Dropdown Manual Input */
+.manual-dropdown {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.dropdown-btn {
+    padding: 10px 15px;
+    background: #ff2600;
+    background-image: url("texture.png");
+    color: #ffffff;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.3s ease;
+    z-index: 502;
+}
+
+.dropdown-btn:hover {
+    transform: scale(1.05);
+}
+
+/* Container input manual */
+.manual-input {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color:  #7c2516;
+    background-image: url("texture.png");
+    z-index: 201;
+    padding-top: 20px;
+    padding-inline: 20px;
+    padding-bottom: 10px;
+    border-radius: 20px;
+}
+
+.manual-input input {
+    width: 95%;
+    padding-block: 8px;
+    padding-inline: 15px;
+    margin-bottom: 18px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.add-btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    background: #101010;
+    background-image: url("texture.png");
+    color: #fff;
+    cursor: pointer;
+    width: 90%;
+}
+
+.add-btn:hover {
+    transform: scale(1.03);
+}
+
+/* Reuse bouncing keyframes dari atas */
+.bounce-in  { animation: bounceIn 0.6s both; }
+.bounce-out { animation: bounceOut 0.6s both; }
+.hidden { display: none !important; }
+
+/* PDF Word Counter Styles */
+.stats-container {
+    background: linear-gradient(135deg, rgba(4, 10, 92, 0.85), rgba(0, 0, 0, 0.85));
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.stats-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+.stats-container h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #ffffff;
+    text-align: center;
+    font-size: 1.3em;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px 10px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.85));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+/* .stat-item:hover {
+    transform: translateY(-1px);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
+    border-color: rgba(0, 255, 136, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+} */
+
+.stat-label {
+    font-weight: bold;
+    color: #454545;
+    font-size: 0.9em;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    color: #29022b;
+    font-weight: bold;
+    font-size: 1.8em;
+    text-shadow: 0 0 10px rgba(109, 2, 102, 0.3);
+    transition: all 0.3s ease;
+}
+
+.stat-item:hover .stat-value {
+    color: #b80898;
+    text-shadow: 0 0 15px rgba(183, 14, 169, 0.5);
+    transform: scale(1.05);
+}
+
+.viewer-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding: 5px 20px;
+    background: rgba(255, 255, 255, 0.34);
+    border-radius: 8px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.viewer-controls button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    background: #444;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    min-width: 100px;
+    margin-top: 10px;
+}
+
+.viewer-controls button:hover:not(:disabled) {
+    background: #555;
+    transform: translateY(-1px);
+}
+
+.viewer-controls button:disabled {
+    background: #666;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+#page-info {
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    min-width: 120px;
+    padding: 0 15px;
+}
+
+.pdf-viewer-container {
+    position: relative;
+    text-align: center;
+    border: 2px solid #333;
+    border-radius: 8px;
+    overflow: auto;
+    max-height: 600px;
+    background: #fff;
+}
+
+#pdf-canvas {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+#highlight-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.highlight-controls {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.highlight-controls button {
+    padding: 10px 15px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 5px;
+    background: #444;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.highlight-controls button:hover {
+    background: #666;
+    transform: translateY(-2px);
+}

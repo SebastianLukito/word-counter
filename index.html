@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Word Counter</title>
+    <link rel="icon" href="hehe.ico" type="image/jpg">
+    <link rel="stylesheet" href="print.css">
+    <link rel="stylesheet" href="marquee.css">
+    <link rel="stylesheet" href="cursor.css">
+    <link rel="stylesheet" href="rightpanel.css" />
+</head>
+<body>
+    <div id="audio-modal" class="audio-modal">
+        <div class="modal-content">
+        <p>Dengan klik tombol ini, kamu menyatakan <br>bahwa <u>Sebastianus Lukito itu keren.</u></p>
+        <button id="audio-confirm-btn">Setuju</button>
+        </div>
+    </div>
+    <canvas id="rain-canvas"></canvas>
+    <!-- audio rain loop -->
+    <audio id="rain-audio" src="hehe.mp3" loop autoplay></audio>
+
+    <div class="marquee" id="marquee">
+        <p id="marqueeText">THIS ENGINE IS MADE WITH LOVE BY SEBASTIANUS LUKITO ⚡
+            <!-- <img src="igr.png" alt="Logo Indogrosir" class="marquee-logo"> -->
+        </p>
+    </div>
+
+    <div class="container">
+        <main class="main">
+            <section class="left-panel">
+                <h2>PDF WORD COUNTER</h2>
+                <!-- Bagian Drag & Drop untuk PDF -->
+                <div class="drop-section" id="drop-section">
+                    <input type="file" id="pdfInput" accept=".pdf" style="display: none;">
+                    <p>Drag & Drop or Click Here to Insert PDF File</p>
+                    <div id="file-list"></div>
+                </div>
+
+                <!-- Area untuk menampilkan statistik -->
+                <div class="stats-container" id="stats-container" style="display: none;">
+                    <h3>STATISTICS</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-label">Total Characters:</span>
+                            <span class="stat-value" id="total-chars">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Characters (no spaces):</span>
+                            <span class="stat-value" id="chars-no-spaces">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Total Words:</span>
+                            <span class="stat-value" id="total-words">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Pages:</span>
+                            <span class="stat-value" id="total-pages">0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="button-section">
+                    <button id="count-btn" style="display: none;">Count Characters</button>
+                    <button id="reset-btn">Reset Counter</button>
+                </div>
+                <div class="message" id="message">
+                    <p>
+                    If there is a problem with the engine, don't hesitate to contact
+                    <b>the developer, the king, the legend named Sebastianus Lukito.</b>
+                    </p>
+                    <p>
+                    Upload your PDF file and view it with character counting and highlighting features.
+                    Click and drag to highlight text areas that you want to exclude from counting.
+                    </p>
+                </div>
+            </section>
+            <img id="loading-gif" src="anim.gif" alt="Loading Anim" class="hidden" />
+            <section class="right-panel">
+                <!-- di dalam .right-panel -->
+                
+                <div class="panel-content">
+                    <h2>PDF VIEWER</h2>
+                    <div class="viewer-controls">
+                        <button id="prev-page">← Previous</button>
+                        <span id="page-info">Page 1 of 1</span>
+                        <button id="next-page">Next →</button>
+                    </div>
+                    <div class="pdf-viewer-container">
+                        <canvas id="pdf-canvas" style="border: 1px solid #ccc;"></canvas>
+                    </div>
+                    <p>This engine is exclusively crafted for Ica Sayang</p>
+                </div>
+            </section>
+
+        </main>
+        
+    </div>
+    <!-- Footer -->
+    <footer>
+        <p>&copy; Sebastianus Lukito 2025</p>
+    </footer>
+    <!-- Lightning overlay -->
+    <div id="lightning-overlay"></div>
+
+    <!-- Loading Popup -->
+    <div id="loading-popup" class="loading-popup" style="display: none;">
+        <div class="loading-spinner"></div>
+        <p>Lagi diproses... Mohon tunggu ya mas...</p>
+    </div>
+
+    <!-- Scripts -->
+    <!-- PDF.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <!-- PDF.js Worker -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js"></script>
+    <!-- Initialize PDF.js Worker -->
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+    </script>
+    <!-- PDF Text Layer Library for text extraction -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf2pic/2.1.4/pdf2pic.min.js"></script>
+
+    
+    <script defer src="print.js"></script> 
+    
+</body>
+</html>

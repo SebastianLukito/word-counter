@@ -1,0 +1,57 @@
+.main {
+    overflow-x: hidden;
+}
+
+.right-panel {
+    transform: translateX(100%); /* Sembunyikan di luar viewport */
+    opacity: 0;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.right-panel.active {
+    transform: translateX(0); /* Geser ke posisi semula */
+    opacity: 1;
+    animation: bounce 0.5s ease;
+}
+
+.motor-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 220px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    scale: 0.55;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.motor-container.hidden {
+    display: none; /* Sembunyikan animasi GIF */
+}
+
+.motor-container.active {
+    transform: translateX(0); /* Geser ke posisi semula */
+    opacity: 1;
+    animation: bounce 0.5s ease;
+}
+
+.motor-animation, .motor-baruteks {
+    /* height: 35vw; */
+    animation: motorMove 1.5s infinite;
+    /* left: 0; */
+}
+
+@keyframes motorMove {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(0, -10px); }
+}
+
+
+/* Efek bouncing */
+@keyframes bounce {
+    0% { transform: translateX(-20px); }
+    50% { transform: translateX(10px); }
+    100% { transform: translateX(0); }
+}
