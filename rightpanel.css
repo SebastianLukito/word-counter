@@ -14,12 +14,13 @@
     animation: bounce 0.5s ease;
 }
 
+
 .motor-container {
     display: flex;
     justify-content: center;
     align-items: center;
     position: absolute;
-    top: 220px;
+    top: 250px;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 10;
@@ -54,4 +55,15 @@
     0% { transform: translateX(-20px); }
     50% { transform: translateX(10px); }
     100% { transform: translateX(0); }
+}
+
+/* Ensure panel content doesn't conflict with slide animation */
+.panel-content {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.panel-content.hidden {
+    opacity: 0;
+    pointer-events: none;
 }

@@ -223,6 +223,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function switchMode(mode) {
+        // Only reset if we're switching to a different mode and there's content
+        const shouldReset = currentMode !== mode && (currentFile || extractedText);
+        
         currentMode = mode;
         
         // Update button states
@@ -246,8 +249,10 @@ document.addEventListener('DOMContentLoaded', function () {
             pasteHint.style.display = 'block';
         }
         
-        // Reset current file
-        resetCounter();
+        // Only reset if switching modes and there's existing content
+        if (shouldReset) {
+            resetCounter();
+        }
     }
 
 
@@ -456,8 +461,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function resetCounter() {
         // 1. Hide panel dan reset state
-        hideWithBounce(panelContent);
+        console.log('Resetting counter, hiding panel...');
         document.querySelector('.right-panel').classList.remove('active');
+        panelContent.classList.remove('bounce-in');
+        panelContent.classList.add('hidden');
         currentFile = null;
         pdfDoc = null;
         currentPage = 1;
@@ -510,10 +517,13 @@ document.addEventListener('DOMContentLoaded', function () {
             updateStats();
             
             // Show stats and viewer
+            console.log('PDF processed, showing viewer...');
             statsContainer.style.display = 'block';
             document.querySelector('.right-panel').classList.add('active');
             hideWithBounce(loadingGif);
-            showWithBounce(panelContent);
+            // Simply show panel content without conflicting animations
+            panelContent.classList.remove('hidden');
+            console.log('Right panel should be visible now');
             
             // Render first page
             currentPage = 1;
@@ -540,9 +550,12 @@ document.addEventListener('DOMContentLoaded', function () {
             reader.readAsDataURL(file);
             
             // Show viewer
+            console.log('Image processed, showing viewer...');
             document.querySelector('.right-panel').classList.add('active');
             hideWithBounce(loadingGif);
-            showWithBounce(panelContent);
+            // Simply show panel content without conflicting animations
+            panelContent.classList.remove('hidden');
+            console.log('Right panel should be visible now');
             
             loadingPopup.style.display = 'none';
             ocrProgress.style.display = 'block';
