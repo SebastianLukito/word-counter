@@ -14,8 +14,19 @@ function countText(text) {
 // ---- Rain effect ----
 class Rain {
     /**
-     * @param {string} canvasId        — id elemen <canvas>
-     * @param {number} maxAngle        — sudut maksimum (radian) dari vertikal (default ±0.4 ≈23°)
+     * @param {string} canvasId        — id elemen         pasteHint.style.display = 'none';
+        ocrProgress.style.display = 'none';
+        
+        // Clear canvas and image
+        if (pdfCanvas) {
+            ctx.clearRect(0, 0, pdfCanvas.width, pdfCanvas.height);
+        }
+        if (uploadedImage) {
+            uploadedImage.src = '';
+        }
+        
+        // Remove any paste feedback classes
+        dropSection.classList.remove('pasting', 'paste-success');     * @param {number} maxAngle        — sudut maksimum (radian) dari vertikal (default ±0.4 ≈23°)
      * @param {number} windChangeInterval — interval ganti angin (ms), default 5000ms
      */
     constructor(canvasId, maxAngle = 0.4, windChangeInterval = 5000) {
@@ -150,8 +161,22 @@ document.addEventListener('DOMContentLoaded', function () {
     const dropSection    = document.getElementById('drop-section');
     const fileList       = document.getElementById('file-list');
     const pdfInput       = document.getElementById('pdfInput');
+    const imageInput     = document.getElementById('imageInput');
     const statsContainer = document.getElementById('stats-container');
     const loadingPopup   = document.getElementById('loading-popup');
+    const dropText       = document.getElementById('drop-text');
+    
+    // Mode selector elements
+    const pdfModeBtn     = document.getElementById('pdf-mode');
+    const imageModeBtn   = document.getElementById('image-mode');
+    const viewerTitle    = document.getElementById('viewer-title');
+    const pdfControls    = document.getElementById('pdf-controls');
+    const imageContainer = document.getElementById('image-container');
+    const uploadedImage  = document.getElementById('uploaded-image');
+    const ocrProgress    = document.getElementById('ocr-progress');
+    const progressFill   = document.getElementById('progress-fill');
+    const ocrStatus      = document.getElementById('ocr-status');
+    const pasteHint      = document.getElementById('paste-hint');
     
     // PDF viewer elements
     const pdfCanvas      = document.getElementById('pdf-canvas');
@@ -164,13 +189,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const panelContent     = document.querySelector('.panel-content');
     const loadingGif     = document.getElementById('loading-gif');
 
-    // PDF variables
-    let pdfFile = null;
+    // File processing variables
+    let currentFile = null;
     let pdfDoc = null;
     let currentPage = 1;
     let totalPages = 0;
     let extractedText = '';
     let textStats = { totalChars: 0, charsNoSpaces: 0, words: 0 };
+    let currentMode = 'pdf'; // 'pdf' or 'image'
 
     // PDF viewer controls
     prevPageBtn.addEventListener('click', () => {
@@ -186,6 +212,43 @@ document.addEventListener('DOMContentLoaded', function () {
             renderPage();
         }
     });
+
+    // Mode switching
+    pdfModeBtn.addEventListener('click', () => {
+        switchMode('pdf');
+    });
+
+    imageModeBtn.addEventListener('click', () => {
+        switchMode('image');
+    });
+
+    function switchMode(mode) {
+        currentMode = mode;
+        
+        // Update button states
+        pdfModeBtn.classList.toggle('active', mode === 'pdf');
+        imageModeBtn.classList.toggle('active', mode === 'image');
+        
+        // Update UI text and visibility
+        if (mode === 'pdf') {
+            dropText.textContent = 'Drag & Drop or Click Here to Insert PDF File';
+            viewerTitle.textContent = 'PDF VIEWER';
+            pdfControls.style.display = 'flex';
+            imageContainer.style.display = 'none';
+            pdfCanvas.style.display = 'block';
+            pasteHint.style.display = 'none';
+        } else {
+            dropText.textContent = 'Drag & Drop or Click Here to Insert Image File';
+            viewerTitle.textContent = 'IMAGE VIEWER';
+            pdfControls.style.display = 'none';
+            imageContainer.style.display = 'block';
+            pdfCanvas.style.display = 'none';
+            pasteHint.style.display = 'block';
+        }
+        
+        // Reset current file
+        resetCounter();
+    }
 
 
     // Helper functions for bounce animations
@@ -205,7 +268,21 @@ document.addEventListener('DOMContentLoaded', function () {
     panelContent.classList.add('hidden');
     showWithBounce(loadingGif);
 
-    // --- Drag & Drop PDF ---
+    // Make document focusable for paste events
+    document.addEventListener('click', () => {
+        if (currentMode === 'image') {
+            document.body.focus();
+        }
+    });
+
+    // Add visual indicator when page is ready for paste
+    document.addEventListener('keydown', (e) => {
+        if (currentMode === 'image' && (e.ctrlKey || e.metaKey) && e.key === 'v') {
+            dropSection.classList.add('pasting');
+        }
+    });
+
+    // --- Drag & Drop for both PDF and Image ---
     dropSection.addEventListener('dragover', e => {
         e.preventDefault();
         dropSection.classList.add('dragover');
@@ -218,43 +295,170 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
         dropSection.classList.remove('dragover');
         const files = e.dataTransfer.files;
-        if (files.length && files[0].name.endsWith('.pdf')) {
-            pdfFile = files[0];
-            displayFile(files[0]);
-            processPDF(files[0]);
-            dropSection.querySelector('p').style.display = 'none';
-        } else {
-            alert('Hanya file PDF yang diperbolehkan!');
+        if (files.length) {
+            handleFileUpload(files[0]);
         }
     });
-    dropSection.addEventListener('click', () => pdfInput.click());
+    dropSection.addEventListener('click', () => {
+        if (currentMode === 'pdf') {
+            pdfInput.click();
+        } else {
+            imageInput.click();
+        }
+    });
+    
     pdfInput.addEventListener('change', e => {
         const file = e.target.files[0];
-        if (file && file.name.endsWith('.pdf')) {
-            pdfFile = file;
-            displayFile(file);
-            processPDF(file);
-            dropSection.querySelector('p').style.display = 'none';
+        if (file) handleFileUpload(file);
+    });
+    
+    imageInput.addEventListener('change', e => {
+        const file = e.target.files[0];
+        if (file) handleFileUpload(file);
+    });
+
+    // --- Clipboard Paste Handler ---
+    document.addEventListener('paste', async (e) => {
+        // Only handle paste in image mode
+        if (currentMode !== 'image') return;
+        
+        e.preventDefault();
+        
+        const clipboardItems = e.clipboardData.items;
+        let imageItem = null;
+        
+        // Find image in clipboard
+        for (let item of clipboardItems) {
+            if (item.type.startsWith('image/')) {
+                imageItem = item;
+                break;
+            }
+        }
+        
+        if (imageItem) {
+            dropSection.classList.add('pasting');
+            
+            const imageFile = imageItem.getAsFile();
+            if (imageFile) {
+                // Create a more descriptive filename with timestamp
+                const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+                const extension = imageFile.type.split('/')[1] || 'png';
+                const renamedFile = new File([imageFile], `pasted-image-${timestamp}.${extension}`, {
+                    type: imageFile.type
+                });
+                
+                // Show success feedback
+                setTimeout(() => {
+                    dropSection.classList.remove('pasting');
+                    dropSection.classList.add('paste-success');
+                    setTimeout(() => {
+                        dropSection.classList.remove('paste-success');
+                    }, 600);
+                }, 200);
+                
+                // Process the pasted image
+                currentFile = renamedFile;
+                displayFile(renamedFile);
+                processImage(renamedFile);
+                dropText.style.display = 'none';
+            }
         } else {
-            alert('Format file tidak valid. Harap pilih file .pdf');
-            pdfInput.value = '';
+            // Show a helpful message if no image found in clipboard
+            showPasteMessage('No image found in clipboard. Copy an image first, then try pasting again.');
         }
     });
 
+    // Show paste feedback message
+    function showPasteMessage(message) {
+        const existingMsg = document.getElementById('paste-message');
+        if (existingMsg) existingMsg.remove();
+        
+        const msgDiv = document.createElement('div');
+        msgDiv.id = 'paste-message';
+        msgDiv.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 0, 0, 0.9);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            z-index: 10000;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            animation: slideInRight 0.3s ease;
+        `;
+        msgDiv.textContent = message;
+        document.body.appendChild(msgDiv);
+        
+        setTimeout(() => {
+            msgDiv.style.animation = 'slideOutRight 0.3s ease';
+            setTimeout(() => msgDiv.remove(), 300);
+        }, 3000);
+    }
+
+    // Add CSS animations for paste message
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideOutRight {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+    `;
+    document.head.appendChild(style);
+
+    function handleFileUpload(file) {
+        const fileName = file.name.toLowerCase();
+        
+        if (currentMode === 'pdf') {
+            if (fileName.endsWith('.pdf')) {
+                currentFile = file;
+                displayFile(file);
+                processPDF(file);
+                dropText.style.display = 'none';
+            } else {
+                alert('Dalam mode PDF, hanya file PDF yang diperbolehkan!');
+                pdfInput.value = '';
+            }
+        } else {
+            const imageExtensions = ['.jpg', '.jpeg', '.png', '.bmp', '.tiff', '.webp'];
+            const isValidImage = imageExtensions.some(ext => fileName.endsWith(ext));
+            
+            if (isValidImage) {
+                currentFile = file;
+                displayFile(file);
+                processImage(file);
+                dropText.style.display = 'none';
+            } else {
+                alert('Dalam mode Image, hanya file gambar (JPG, PNG, BMP, TIFF, WebP) yang diperbolehkan!');
+                imageInput.value = '';
+            }
+        }
+    }
+
     function displayFile(file) {
+        const iconSrc = currentMode === 'pdf' ? 'pdf.png' : 'texture.png'; // Use texture.png as image icon or add specific image icon
         fileList.innerHTML = `
             <div class="file-item">
-                <img src="pdf.png" alt="PDF Icon">
+                <img src="${iconSrc}" alt="${currentMode.toUpperCase()} Icon">
                 <span>${file.name}</span>
             </div>
         `;
     }
 
     resetBtn.addEventListener('click', () => {
+        resetCounter();
+    });
+
+    function resetCounter() {
         // 1. Hide panel dan reset state
         hideWithBounce(panelContent);
         document.querySelector('.right-panel').classList.remove('active');
-        pdfFile = null;
+        currentFile = null;
         pdfDoc = null;
         currentPage = 1;
         totalPages = 0;
@@ -263,11 +467,16 @@ document.addEventListener('DOMContentLoaded', function () {
         fileList.innerHTML = '';
         statsContainer.style.display = 'none';
         pdfInput.value = '';
-        dropSection.querySelector('p').style.display = 'block';
+        imageInput.value = '';
+        dropText.style.display = 'block';
+        ocrProgress.style.display = 'none';
         
-        // Clear canvas
+        // Clear canvas and image
         if (pdfCanvas) {
             ctx.clearRect(0, 0, pdfCanvas.width, pdfCanvas.height);
+        }
+        if (uploadedImage) {
+            uploadedImage.src = '';
         }
     
         // 2. Bersihkan semua kelas animasi lama di GIF
@@ -276,7 +485,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
         // 3. Tampilkan lagi dengan animasi masuk
         showWithBounce(loadingGif);
-    });
+    }
 
     // --- Process PDF ---
     async function processPDF(file) {
@@ -313,6 +522,110 @@ document.addEventListener('DOMContentLoaded', function () {
         } catch (err) {
             console.error('Error processing PDF:', err);
             alert(`Gagal memproses file PDF: ${err.message}`);
+        } finally {
+            loadingPopup.style.display = 'none';
+        }
+    }
+
+    // --- Process Image with OCR ---
+    async function processImage(file) {
+        try {
+            loadingPopup.style.display = 'flex';
+            
+            // Display image
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                uploadedImage.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+            
+            // Show viewer
+            document.querySelector('.right-panel').classList.add('active');
+            hideWithBounce(loadingGif);
+            showWithBounce(panelContent);
+            
+            loadingPopup.style.display = 'none';
+            ocrProgress.style.display = 'block';
+            
+            // Perform OCR with robust error handling
+            progressFill.style.width = '0%';
+            ocrStatus.textContent = 'Initializing OCR engine...';
+            
+            let text = '';
+            let progressInterval;
+            
+            try {
+                // Check if Tesseract is available
+                if (typeof Tesseract === 'undefined') {
+                    throw new Error('Tesseract.js library not loaded');
+                }
+                
+                progressFill.style.width = '10%';
+                ocrStatus.textContent = 'Creating OCR worker...';
+                
+                // Use the simpler Tesseract.recognize method
+                progressInterval = setInterval(() => {
+                    const currentWidth = parseInt(progressFill.style.width) || 10;
+                    if (currentWidth < 90) {
+                        progressFill.style.width = `${currentWidth + 10}%`;
+                        const messages = [
+                            'Loading OCR engine...',
+                            'Initializing language model...',
+                            'Preprocessing image...',
+                            'Analyzing text regions...',
+                            'Recognizing characters...',
+                            'Processing text...',
+                            'Finalizing results...'
+                        ];
+                        const messageIndex = Math.floor(currentWidth / 15);
+                        ocrStatus.textContent = messages[messageIndex] || 'Processing...';
+                    }
+                }, 800);
+                
+                // Use the direct recognize method which is more stable
+                const result = await Tesseract.recognize(file, 'eng', {
+                    logger: m => console.log(m)
+                });
+                
+                text = result.data.text || '';
+                
+                // Complete progress
+                clearInterval(progressInterval);
+                progressFill.style.width = '100%';
+                ocrStatus.textContent = 'Text extraction complete!';
+                
+            } catch (ocrError) {
+                console.error('OCR Error:', ocrError);
+                if (progressInterval) {
+                    clearInterval(progressInterval);
+                }
+                ocrProgress.style.display = 'none';
+                
+                // Provide user-friendly error message
+                const errorMsg = ocrError.message.includes('SetImageFile') 
+                    ? 'Failed to process image. Please try a different image format or refresh the page.'
+                    : 'OCR processing failed. Please try again or refresh the page.';
+                    
+                throw new Error(errorMsg);
+            }
+            
+            // Process extracted text
+            extractedText = text;
+            textStats = countText(extractedText);
+            updateStats();
+            
+            // Hide OCR progress and show stats
+            ocrProgress.style.display = 'none';
+            statsContainer.style.display = 'block';
+            ocrProgress.style.display = 'none';
+            
+            // Set pages to 1 for images
+            totalPages = 1;
+            
+        } catch (err) {
+            console.error('Error processing image:', err);
+            alert(`Gagal memproses gambar: ${err.message}`);
+            ocrProgress.style.display = 'none';
         } finally {
             loadingPopup.style.display = 'none';
         }

@@ -31,10 +31,20 @@
         <main class="main">
             <section class="left-panel">
                 <h2>PDF WORD COUNTER</h2>
-                <!-- Bagian Drag & Drop untuk PDF -->
+                <!-- File Type Selector -->
+                <div class="file-type-selector">
+                    <button id="pdf-mode" class="mode-btn active">PDF Mode</button>
+                    <button id="image-mode" class="mode-btn">Image Mode</button>
+                </div>
+
+                <!-- Bagian Drag & Drop untuk PDF/Image -->
                 <div class="drop-section" id="drop-section">
                     <input type="file" id="pdfInput" accept=".pdf" style="display: none;">
-                    <p>Drag & Drop or Click Here to Insert PDF File</p>
+                    <input type="file" id="imageInput" accept=".jpg,.jpeg,.png,.bmp,.tiff,.webp" style="display: none;">
+                    <p id="drop-text">Drag & Drop or Click Here to Insert PDF File</p>
+                    <div id="paste-hint" style="display: none;">
+                        <small>💡 Pro Tip: You can also paste images from clipboard using <kbd>Ctrl+V</kbd></small>
+                    </div>
                     <div id="file-list"></div>
                 </div>
 
@@ -80,14 +90,23 @@
                 <!-- di dalam .right-panel -->
                 
                 <div class="panel-content">
-                    <h2>PDF VIEWER</h2>
-                    <div class="viewer-controls">
+                    <h2 id="viewer-title">PDF VIEWER</h2>
+                    <div class="viewer-controls" id="pdf-controls">
                         <button id="prev-page">← Previous</button>
                         <span id="page-info">Page 1 of 1</span>
                         <button id="next-page">Next →</button>
                     </div>
                     <div class="pdf-viewer-container">
                         <canvas id="pdf-canvas" style="border: 1px solid #ccc;"></canvas>
+                        <div id="image-container" style="display: none; text-align: center;">
+                            <img id="uploaded-image" src="" alt="Uploaded image for OCR processing" style="max-width: 100%; max-height: 600px; border: 1px solid #ccc; border-radius: 8px;">
+                        </div>
+                    </div>
+                    <div id="ocr-progress" style="display: none; text-align: center; margin-top: 15px;">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                        <p id="ocr-status">Processing image...</p>
                     </div>
                     <p>This engine is exclusively crafted for Ica Sayang</p>
                 </div>
@@ -118,8 +137,8 @@
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
     </script>
-    <!-- PDF Text Layer Library for text extraction -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf2pic/2.1.4/pdf2pic.min.js"></script>
+    <!-- Tesseract.js for OCR -->
+    <script src="https://unpkg.com/tesseract.js@4.1.4/dist/tesseract.min.js"></script>
 
     
     <script defer src="print.js"></script> 
